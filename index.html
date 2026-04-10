@@ -8,24 +8,27 @@
 <style>
 body {
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
     background: black;
     color: white;
 }
 
-/* LAYOUT DIVIDIDO */
+/* LAYOUT RESPONSIVO */
 .main {
     display: flex;
-    height: 100vh;
+    flex-direction: row; /* Lado a lado en PC */
+    min-height: 100vh;
 }
 
-/* VIDEO IZQUIERDA */
+/* VIDEO */
 .video-container {
     width: 50%;
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
+    position: sticky;
+    top: 0;
 }
 
 .video-container video {
@@ -35,7 +38,7 @@ body {
     filter: brightness(0.7);
 }
 
-/* CONTENIDO DERECHA */
+/* CONTENIDO */
 .content {
     width: 50%;
     display: flex;
@@ -43,7 +46,26 @@ body {
     align-items: center;
     flex-direction: column;
     text-align: center;
-    padding: 40px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* DISEÑO PARA CELULARES */
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column; /* Video arriba, texto abajo */
+    }
+    .video-container {
+        width: 100%;
+        height: 40vh; /* El video ocupa el 40% de la pantalla */
+        position: relative;
+    }
+    .content {
+        width: 100%;
+        min-height: 60vh;
+    }
+    h1 { font-size: 1.5rem; }
+    p { font-size: 0.9rem; }
 }
 
 /* BOTÓN */
@@ -57,6 +79,7 @@ button {
     cursor: pointer;
     transition: 0.3s;
     margin-bottom: 20px;
+    z-index: 10;
 }
 
 button:hover {
@@ -74,12 +97,12 @@ button:hover {
     to {opacity: 1; transform: translateY(0);}
 }
 
-/* CONFETI */
+/* EFECTOS */
 .confeti {
-    position: absolute;
+    position: fixed;
     width: 10px;
     height: 10px;
-    background: red;
+    z-index: 100;
     animation: caer 4s linear infinite;
 }
 
@@ -88,10 +111,10 @@ button:hover {
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-/* FUEGOS */
 .fuego {
-    position: absolute;
+    position: fixed;
     font-size: 20px;
+    z-index: 100;
     animation: explotar 1s ease-out forwards;
 }
 
@@ -99,7 +122,6 @@ button:hover {
     0% { transform: scale(0); opacity: 1; }
     100% { transform: scale(2); opacity: 0; }
 }
-
 </style>
 </head>
 
@@ -107,34 +129,27 @@ button:hover {
 
 <div class="main">
 
-    <!-- VIDEO -->
     <div class="video-container">
         <video autoplay muted loop playsinline>
             <source src="fondo.mp4" type="video/mp4">
         </video>
     </div>
 
-    <!-- CONTENIDO -->
     <div class="content">
         <button onclick="mostrarMensaje()">Presiona aquí 🎁</button>
 
         <div class="mensaje" id="mensaje">
             <h1>🎉 Feliz Cumpleaños Yosss 🎉</h1>
-
             <p>Hoy no solo cumples años… también sobrevives otro nivel de este juego raro llamado vida</p>
-
-            <p>Entre caos, pensamientos profundos y días pesados… sigues aquí.  
+            <p>Entre caos, pensamientos profundos y días pesados… sigues aquí. <br>
             Y eso ya dice mucho de lo increíble que eres</p>
-
             <p>Ojalá este año te regale momentos que te hagan sentir en paz… aunque sea por ratitos.</p>
-
             <h2>🎂 Disfruta la noche 🎂</h2>
         </div>
     </div>
 
 </div>
-s
-<!-- MÚSICA -->
+
 <audio id="musica" loop>
     <source src="musica.mp3" type="audio/mp3">
 </audio>
@@ -142,13 +157,18 @@ s
 <script>
 function mostrarMensaje() {
     document.getElementById("mensaje").style.display = "block";
-    document.getElementById("musica").play();
+    const music = document.getElementById("musica");
+    music.play().catch(e => console.log("El navegador bloqueó el audio inicial"));
 
     lanzarConfeti();
     lanzarFuegos();
+    
+    // Scroll suave hacia abajo en móvil para ver el mensaje
+    if(window.innerWidth < 768) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
 }
 
-/* CONFETI CONTINUO */
 function lanzarConfeti() {
     setInterval(() => {
         const c = document.createElement("div");
@@ -156,12 +176,10 @@ function lanzarConfeti() {
         c.style.left = Math.random() * 100 + "vw";
         c.style.background = `hsl(${Math.random()*360},100%,50%)`;
         document.body.appendChild(c);
-
         setTimeout(() => c.remove(), 4000);
     }, 150);
 }
 
-/* FUEGOS ALEATORIOS */
 function lanzarFuegos() {
     setInterval(() => {
         const f = document.createElement("div");
@@ -169,9 +187,7 @@ function lanzarFuegos() {
         f.innerHTML = "✨";
         f.style.left = Math.random() * 100 + "vw";
         f.style.top = Math.random() * 80 + "vh";
-
         document.body.appendChild(f);
-
         setTimeout(() => f.remove(), 1000);
     }, 500);
 }
