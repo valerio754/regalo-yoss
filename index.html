@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Cumpleaños Yosselin 🎂</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+}
+
+/* LAYOUT DIVIDIDO */
+.main {
+    display: flex;
+    height: 100vh;
+}
+
+/* VIDEO IZQUIERDA */
+.video-container {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+/* CONTENIDO DERECHA */
+.content {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+}
+
+/* BOTÓN */
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+/* MENSAJE */
+.mensaje {
+    display: none;
+    animation: aparecer 1s ease forwards;
+}
+
+@keyframes aparecer {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* CONFETI */
+.confeti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: red;
+    animation: caer 4s linear infinite;
+}
+
+@keyframes caer {
+    0% { transform: translateY(-10vh) rotate(0); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* FUEGOS */
+.fuego {
+    position: absolute;
+    font-size: 20px;
+    animation: explotar 1s ease-out forwards;
+}
+
+@keyframes explotar {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main">
+
+    <!-- VIDEO -->
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="fondo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+        <button onclick="mostrarMensaje()">Presiona aquí 🎁</button>
+
+        <div class="mensaje" id="mensaje">
+            <h1>🎉 Feliz Cumpleaños Yosss 🎉</h1>
+
+            <p>Hoy no solo cumples años… también sobrevives otro nivel de este juego raro llamado vida</p>
+
+            <p>Entre caos, pensamientos profundos y días pesados… sigues aquí.  
+            Y eso ya dice mucho de lo increíble que eres</p>
+
+            <p>Ojalá este año te regale momentos que te hagan sentir en paz… aunque sea por ratitos.</p>
+
+            <h2>🎂 Disfruta la noche 🎂</h2>
+        </div>
+    </div>
+
+</div>
+s
+<!-- MÚSICA -->
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mp3">
+</audio>
+
+<script>
+function mostrarMensaje() {
+    document.getElementById("mensaje").style.display = "block";
+    document.getElementById("musica").play();
+
+    lanzarConfeti();
+    lanzarFuegos();
+}
+
+/* CONFETI CONTINUO */
+function lanzarConfeti() {
+    setInterval(() => {
+        const c = document.createElement("div");
+        c.classList.add("confeti");
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 4000);
+    }, 150);
+}
+
+/* FUEGOS ALEATORIOS */
+function lanzarFuegos() {
+    setInterval(() => {
+        const f = document.createElement("div");
+        f.classList.add("fuego");
+        f.innerHTML = "✨";
+        f.style.left = Math.random() * 100 + "vw";
+        f.style.top = Math.random() * 80 + "vh";
+
+        document.body.appendChild(f);
+
+        setTimeout(() => f.remove(), 1000);
+    }, 500);
+}
+</script>
+
+</body>
+</html>
